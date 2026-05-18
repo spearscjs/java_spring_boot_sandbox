@@ -1,0 +1,121 @@
+package com.spring_app.sandbox.domain.entity;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+// this class is an entity so maps to a table in the db
+// table annotation specifies name of this table
+@Entity
+@Table(name = "tasks")
+public class Task {
+
+    public Task(UUID id, String title, String description, LocalDate dueDate, TaskStatus status, TaskPriority priority,
+            Instant created, Instant updated) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.status = status;
+        this.priority = priority;
+        this.created = created;
+        this.updated = updated;
+    }
+
+    // id is primary key and is auto generated
+    @Id 
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description", length = 1000)
+    private String description;
+
+    @Column(name = "due_date")
+    private LocalDate dueDate;
+
+    // enum for priority and status
+    @Column(name = "status", nullable=false)
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
+    @Column(name = "priority", nullable=false)
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
+
+    // Audit fields
+    @Column(name = "created", updatable = false, nullable=false)
+    private Instant created;
+
+    @Column(name = "updated", nullable=false)
+    private Instant updated;
+    
+
+    // getters and setters
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }    
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public LocalDate getDueDate() { return dueDate; }
+    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+
+    public TaskStatus getStatus() { return status; }
+    public void setStatus(TaskStatus status) { this.status = status; }
+
+    public TaskPriority getPriority() { return priority; }
+    public void setPriority(TaskPriority priority) { this.priority = priority; }
+
+    public Instant getCreated() { return created; }
+    public void setCreated(Instant created) { this.created = created; }
+
+    public Instant getUpdated() { return updated; }
+    public void setUpdated(Instant updated) { this.updated = updated; }
+
+    // equals and hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; 
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id.equals(task.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }   
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", dueDate=" + dueDate +
+                ", status=" + status +
+                ", priority=" + priority +
+                ", created=" + created +
+                ", updated=" + updated +
+                '}';
+    }
+
+
+
+}
