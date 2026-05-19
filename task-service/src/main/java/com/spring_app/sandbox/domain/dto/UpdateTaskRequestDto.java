@@ -1,0 +1,39 @@
+package com.spring_app.sandbox.domain.dto;
+
+import java.time.LocalDate;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.spring_app.sandbox.domain.entity.TaskPriority;
+import com.spring_app.sandbox.domain.entity.TaskStatus;
+
+import io.micrometer.common.lang.Nullable;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record UpdateTaskRequestDto(
+    @NotBlank(message = TITLE_LENGTH_MESSAGE)
+    @Length(max = 255, message = TITLE_LENGTH_MESSAGE)
+    String title,
+    @Length(max = 1000, message = DESCRIPTION_LENGTH_MESSAGE)
+    @Nullable
+    String description,
+    @Nullable
+    @FutureOrPresent(message = DUE_DATE_MESSAGE)
+    LocalDate dueDate,
+    @NotNull(message = PRIORITY_MESSAGE)
+    TaskPriority priority,
+    @NotNull(message = STATUS_MESSAGE)
+    TaskStatus status
+) {
+    private static final int MAX_TITLE_LENGTH = 255;
+    private static final String TITLE_LENGTH_MESSAGE = "Title must be between 1 and " + MAX_TITLE_LENGTH + " characters";
+    private static final int MAX_DESCRIPTION_LENGTH = 1000;
+    private static final String DESCRIPTION_LENGTH_MESSAGE = "Description must be less than " + MAX_DESCRIPTION_LENGTH + " characters";
+    private static final String DUE_DATE_MESSAGE = "Due date must be in the present or future";     
+    private static final String PRIORITY_MESSAGE = "Priority is required";  
+    private static final String STATUS_MESSAGE = "Status is required";
+
+
+}

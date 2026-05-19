@@ -1,7 +1,7 @@
 run:
-	mvn spring-boot:run
+	cd article-service && mvn spring-boot:run
 
 build:
-	mvn package
+	cd article-service && mvn package
 
 start: build run
