@@ -19,6 +19,10 @@ import jakarta.persistence.Table;
 @Table(name = "tasks")
 public class Task {
 
+    protected Task() {
+        // Required by JPA
+    }
+
     public Task(UUID id, String title, String description, LocalDate dueDate, TaskStatus status, TaskPriority priority,
             Instant created, Instant updated) {
         this.id = id;
