@@ -1,6 +1,0 @@
-com\spring_app\sandbox\article\entity\JsonPlaceholderPostEntity.class
-com\spring_app\sandbox\article\ArticleApp.class
-com\spring_app\sandbox\article\controller\AppController.class
-com\spring_app\sandbox\article\repository\ArticleRepository.class
-com\spring_app\sandbox\article\service\ApiService.class
-com\spring_app\sandbox\article\dto\JsonPlaceholderPostDTO.class
