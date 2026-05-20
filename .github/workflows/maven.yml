@@ -20,4 +20,4 @@ jobs:
         java-version: '21'
 
     - name: Build modules
-      run: cd spring/task-service && make
+      run: make
