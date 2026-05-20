@@ -4,4 +4,7 @@ run:
 build:
 	mvn package
 
+test:
+	mvn test
+
 start: build run
