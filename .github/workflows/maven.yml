@@ -20,4 +20,4 @@ jobs:
         java-version: '21'
 
     - name: Build modules
-      run: mvn -B -T 1C -am -pl :task-service,:article-service clean package
+      run: cd spring/task-service && make
