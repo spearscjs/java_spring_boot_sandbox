@@ -22,7 +22,7 @@ public class Task {
     }
 
     public Task(UUID id, String title, String description, LocalDate dueDate, TaskStatus status, TaskPriority priority,
-            Instant created, Instant updated) {
+            Instant created, Instant updated, String createdBy) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -31,6 +31,7 @@ public class Task {
         this.priority = priority;
         this.created = created;
         this.updated = updated;
+        this.createdBy = createdBy;
     }
 
     @Id 
@@ -61,6 +62,13 @@ public class Task {
     @Column(name = "updated", nullable=false)
     private Instant updated;
     
+  
+    @Column(name = "createdBy", updatable = false, nullable=false)
+    private String createdBy;
+
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+  
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }    
@@ -86,6 +94,8 @@ public class Task {
     public Instant getUpdated() { return updated; }
     public void setUpdated(Instant updated) { this.updated = updated; }
 
+    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true; 
@@ -110,6 +120,7 @@ public class Task {
                 ", priority=" + priority +
                 ", created=" + created +
                 ", updated=" + updated +
+                /*", createdBy='" + createdBy + '\'' +*/
                 '}';
     }
 

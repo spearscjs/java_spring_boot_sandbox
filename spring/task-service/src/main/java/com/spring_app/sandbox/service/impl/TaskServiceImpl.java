@@ -4,9 +4,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring_app.sandbox.domain.CreateTaskRequest;
 import com.spring_app.sandbox.domain.UpdateTaskRequest;
@@ -22,10 +24,11 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
 
     public TaskServiceImpl(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+        this.taskRepository = taskRepository; 
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Task createTask(CreateTaskRequest request) {
         Instant now = Instant.now();
         Task task = new Task(
@@ -36,12 +39,14 @@ public class TaskServiceImpl implements TaskService {
             TaskStatus.OPEN,
             request.priority(),
             now,
-            now
+            now,
+            "Task-Service-User"
         );
         return taskRepository.save(task);
     }
 
     @Override
+    @Transactional
     public Task updateTask(UUID taskID, UpdateTaskRequest request) {
 
         Task task = taskRepository.findById(taskID)
@@ -54,13 +59,26 @@ public class TaskServiceImpl implements TaskService {
         task.setPriority(request.priority());
         task.setUpdated(Instant.now());
 
-        // TODO: Add @Transactional and optimistic locking (@Version) for production-grade concurrency control
-        return taskRepository.save(task);
+        // TODO: optimistic locking (@Version) for production-grade concurrency control
+        // no need to explicitly call save() here as taskRepository.findById returns a managed entity, and changes will be flushed at transaction commit
+        return task;
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<Task> listTasks() {
         return taskRepository.findAll(Sort.by(Direction.ASC, "created"));
+    }
+
+    @Override
+    @Transactional
+    public void deleteTask(UUID taskId) {
+        try {
+            taskRepository.deleteById(taskId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new TaskNotFoundException(taskId);
+        }
+        
     }
 
 }
