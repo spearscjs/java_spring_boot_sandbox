@@ -7,4 +7,7 @@ build:
 test:
 	mvn test
 
+ci:
+	mvn clean verify
+
 start: build run
